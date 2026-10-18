@@ -44,13 +44,11 @@ class ModeratorPanel(ctk.CTkFrame):
             
         name = self.name_entry.get() 
         address = self.address_entry.get() 
-        wastes = self.wastes_entry.get() 
-        owner = self.owner_selector.get() # Считываем выбранного из меню владельца! [3.2]
+        wastes = self.wastes_entry.get().upper()
+        owner = self.owner_selector.get()
         
         conn = sqlite3.connect('ecology.db') 
         cursor = conn.cursor() 
-        
-        # Записываем в БД реального владельца, выбранного модератором [3.2]
         cursor.execute(
             "INSERT INTO eco_points (name, address, latitude, longitude, wastes, owner_name) VALUES (?, ?, ?, ?, ?, ?)", 
             (name, address, self.app.clicked_lat, self.app.clicked_lng, wastes, owner)

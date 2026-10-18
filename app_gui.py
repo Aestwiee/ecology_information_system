@@ -90,10 +90,35 @@ class EcoApp(ctk.CTk):
         for marker in self.map_markers: marker.delete()
         self.map_markers.clear()
         try:
+            waste_translator = {
+                "PET-01": "Пластиковые бутылки (PET)",
+                "HDPE-02": "Плотный пластик (флаконы, канистры)",
+                "PAP-20": "Бумага и картон",
+                "PAP-21": "Журналы и газеты",
+                "GL-70": "Стекло (бутылки, банки)",
+                "FE-40": "Металл (жестяные банки)",
+                "AL-41": "Алюминий (банки от напитков)"
+            }
+
             for point in self.repo.get_points():
                 reliability = point.math_model()
                 color = point.get_marker_color()
-                info_text = f"ID: {point.id} | {point.name}\nАдрес: {point.address}\nНадежность: {reliability}%\nПринимает: {', '.join(point.wastes)}"
+                
+                human_wastes = []
+                for code in point.wastes:
+                    clean_code = code.strip()
+                    human_name = waste_translator.get(clean_code, clean_code)
+                    human_wastes.append(human_name)
+                
+                wastes_list_str = "\n   - " + "\n   - ".join(human_wastes)
+                
+                info_text = (
+                    f"{point.name}\n"
+                    f"Адрес: {point.address}\n"
+                    f"Надежность пункта: {reliability}%\n"
+                    f"Принимаемые категории сырья:{wastes_list_str}"
+                )
+                
                 circle_icon = tkinter.PhotoImage(width=16, height=16)
                 for x in range(16):
                     for y in range(16):
@@ -102,6 +127,7 @@ class EcoApp(ctk.CTk):
                 new_marker.data, new_marker.info = point.id, info_text
                 self.map_markers.append(new_marker)
         except Exception as e: print(f"Ошибка: {e}")
+
 
 if __name__ == "__main__":
     app = EcoApp()
