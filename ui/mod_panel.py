@@ -23,7 +23,7 @@ class ModeratorPanel(ctk.CTkFrame):
 
         self.owner_selector = ctk.CTkOptionMenu(
             self, 
-            values=['БЕЛВТОРРЕСУРСЫ', 'ЭКОЛАЙН']
+            values=['БЕЛВТОРРЕСУРСЫ', 'ЭКОЛАЙН', 'БЕЛЦВЕТМЕТ']
         )
         self.owner_selector.grid(row=4, column=0, padx=20, pady=5, sticky='ew') # py оставляем для внутренней геометрии виджета
         self.owner_selector.set('БЕЛВТОРРЕСУРСЫ')
