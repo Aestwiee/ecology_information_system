@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Локальная база данных проекта «Эко-Навигатор»
+ecology.db
