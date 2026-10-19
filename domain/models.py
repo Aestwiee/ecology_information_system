@@ -33,7 +33,7 @@ class EcoPoint:
 
             if review.status == 'works':
                 voices = 1.0
-            else:
+            else: 
                 voices = 0.0
 
             a += (voices * weight_of_review)

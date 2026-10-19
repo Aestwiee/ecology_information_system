@@ -2,7 +2,7 @@ import customtkinter as ctk
 import tkinter
 from tkintermapview import TkinterMapView
 import tkinter.messagebox as messagebox
-
+from infrastructure.owners_repo import OwnersRepo
 from infrastructure.database import init_db
 from infrastructure.repos import EcoPointsRepo
 from infrastructure.map_controller import MapController
@@ -54,6 +54,7 @@ class EcoApp(ctk.CTk):
         self.active_panel = None
         self.clicked_lat, self.clicked_lng = None, None
         self.load_points()
+        self.owners_repo = OwnersRepo()
 
     def clear_active_panel(self):
         if self.active_panel is not None:
@@ -69,9 +70,7 @@ class EcoApp(ctk.CTk):
         elif role == 'Владелец':
             dialog = ctk.CTkInputDialog(text="Введите персональный пароль Владельца:", title="Вход для бизнеса")
             password = dialog.get_input()
-            owner_map = {"bel123": "БЕЛВТОРРЕСУРСЫ", "line123": "ЭКОЛАЙН", "chermet123": "БЕЛВТОРЧЕРМЕТ"}
-            owner_company = owner_map.get(password)
-            
+            owner_company = self.owners_repo.authenticate(password)
             if owner_company:
                 self.active_panel = OwnerAnalyticsPanel(self.sidebar, owner_company)
                 self.active_panel.grid(row=3, column=0, padx=20, pady=10, sticky='ew')
